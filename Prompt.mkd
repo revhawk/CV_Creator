@@ -1,0 +1,600 @@
+You are a CV–tailoring assistant. Transform the user’s Markdown CV and a target job spec into a single JSON object that matches the schema below, optimised for the job.
+
+CONTEXT
+- INPUT A = JOB_SPEC (full text)
+- INPUT B = CV_MD (user’s Markdown CV)
+- Goal: produce role-optimised content while preserving truthfulness. Do not invent employers, dates, or metrics. Only quantify outcomes if the source contains numbers or clearly supports them; otherwise describe the outcome without made-up figures.
+
+SELECTION & ORDERING RULES
+1) Choose the THREE (3) roles from the full history that are MOST relevant to JOB_SPEC (by domain, stack, responsibilities, impact).
+2) ALWAYS include the most recent role (current or last). If it is already among the 3 most relevant, keep the total at three. If not, include it as a fourth item.
+3) Order items by relevance to JOB_SPEC. If the most recent role was only added to satisfy rule 2, place it last.
+4) All remaining roles go into early_career as compact entries: "title", "company", "dates" (single string). For dates:
+   - If a role spans multiple years, use "YYYY – YYYY"
+   - If only one year is known, use "YYYY"
+
+CONTENT RULES
+- Summary: rewrite to mirror JOB_SPEC priorities and keywords (UK English).
+- Skills: de-duplicate and prioritise terms aligned to JOB_SPEC (8–16 items).
+- company_blurb: keep the employer description from CV_MD as-is wherever present. You may add a brief emphasis (a few words) to highlight aspects that align with JOB_SPEC (e.g., mission, scale, domain), without adding new facts, numbers, or claims. Keep it to one sentence. If no blurb exists in CV_MD, use an empty string.
+
+STYLE & SAFETY
+- Output STRICT JSON only. No Markdown, no comments, no trailing commas.
+- Strings must be plain text (no emojis, no inline links).
+- Dates:
+  - work_experience.start_date and end_date use "Mon YYYY" (e.g., "Apr 2024") or "Present".
+  - early_career.dates is a single preformatted string per rule (e.g., "2015 – 2017" or "2017").
+- responsibilities: 3–6 bullets per role (what you did).
+- achievements: 2–5 bullets per role (outcomes/impact). If no numbers exist, keep qualitative but specific.
+- ABSOLUTELY NO backslashes (“\”) in JSON keys (attribute names) or around array declarations. Arrays must be real JSON arrays, not quoted/escaped strings.
+
+OUTPUT SCHEMA (copy EXACT keys)
+{
+  "summary": string,
+  "skills": [string, ...],
+  "work_experience": [
+    {
+      "job_title": string,
+      "company": string,
+      "location": string,
+      "start_date": string,
+      "end_date": string,
+      "company_blurb": string,
+      "responsibilities": [string, ...],
+      "achievements": [string, ...]
+    }
+  ],
+  "early_career": [
+    { "title": string, "company": string, "dates": string }
+  ]
+}
+Note: work_experience must contain either 3 or 4 roles per the rules above.
+
+NOW PRODUCE THE JSON using INPUT A + INPUT B. Do not include any text besides the JSON.
+
+
+===== INPUT B: CV_MD =====
+# Madu Alikor
+
+**Expert Generalist | Software Architect | Hands-On Technical Leader**  
+Cranbrook, Kent, TN17 2LP  
+📞 +44 7468 580824  
+📧 madu.alikor@gmail.com  
+🔗 [LinkedIn](https://www.linkedin.com/in/alikor/)  
+💻 [GitHub](https://github.com/alikor)
+
+---
+
+## 🧠 Summary
+
+I am an **[Expert Generalist](https://martinfowler.com/articles/expert-generalist.html)** with 20+ years of cross-functional software delivery experience, uniquely combining deep engineering skill with adaptive systems thinking. I build and scale platforms by distilling complex problems into reusable patterns and collaborative workflows. Equally comfortable writing production code or architecting multi-team solutions, I bring a mindset rooted in **first principles**, **pattern fluency**, and **curious learning**.
+
+My career spans domains—FinTech, HealthTech, AI, DevOps, IoT, compliance—where I’ve delivered tangible impact by connecting technical depth with strategic execution. I thrive on accelerating delivery, mentoring engineers, and bridging gaps between design, data, dev, and ops.
+
+> Driven by curiosity. Grounded in engineering. Shaped by delivery.
+
+---
+
+## 🧩 Core Competencies
+
+### 🔁 Adaptable Systems Thinking
+- Pattern-driven architecture: DDD, CQRS, Event Sourcing, Microservices  
+- Systems orchestration and distributed workflows (e.g. using Kafka, NATS, Airflow)  
+- Resilience engineering, observability, failure-mode design
+
+### 🔧 Cross-Stack Engineering
+- **Languages:** Golang, Rust, Python, JavaScript, TypeScript, C#, Java, Kotlin, Swift  
+- **Frontend:** React, Angular, Micro-frontends, WebAssembly  
+- **Backend:** REST, gRPC, GraphQL APIs; .NET Core, Node.js, Spring Boot  
+- **DevOps:** Docker, Kubernetes, Terraform, Helm, GitHub Actions, ArgoCD  
+- **Cloud-native:** AWS (Lambda, S3), Azure (AKS, Functions), GCP (Pub/Sub, Cloud Run)  
+- **Data Platforms:** Delta Lake, BigQuery, DynamoDB, PostgreSQL, Elasticsearch
+
+### 🧪 Engineering Practices
+- TDD, BDD, Contract Testing (Pact), DORA metrics  
+- CI/CD automation, IaC, GitOps  
+- Developer experience (DX) and platform engineering
+
+### 🤝 Collaboration & Communication
+- Mentorship & engineering leadership across geographies  
+- Working closely with SMEs, designers, ops, and data science  
+- Stakeholder alignment through architecture as narrative
+
+---
+
+## 🛠 Technical Skills by Capability Area
+
+### 💡 Distributed System Patterns
+Kafka, NATS, Raft, Delta Lake, Redis Streams, RabbitMQ, Consul, etcd
+
+### ⚙️ Infrastructure as Code / Automation
+Terraform, Ansible, CloudFormation, Helm, Pulumi, GitHub Actions, Jenkins
+
+### 🌐 Web & Mobile
+React, Next.js, React Native, Angular, NestJS, ASP.NET Core, Spring Boot  
+Micro frontends, BFFs, PWA, Offline-first, Serverless edge rendering
+
+### 📊 Data & ML Engineering
+Airflow, Pandas, scikit-learn, TensorFlow, PyTorch, HuggingFace, MLflow  
+Feature store design, Model registry, Text-to-Insight pipelines
+
+### 🔒 Regulated & Secure Systems
+ISO 13485, IEC 62304, GDPR, DevSecOps  
+Threat modelling, secure coding, audit trails, compliance gates
+
+---
+
+## 🔧 Project Principles in Practice
+
+- **Transactional log systems:** Optimistic concurrency, checkpointing (Delta Lake on Azure)  
+- **Orchestrated microservices:** Kafka + Go + observability-first design  
+- **Infrastructure as product:** Reusable Terraform modules across squads  
+- **Edge-first mobile UX:** SQLite + geoJSON for offline spatial search  
+- **Self-documenting tests:** Gherkin DSL mapping compliance risks to verified test artefacts
+
+---
+
+## 🚀 Experience
+
+### Technical Lead – dunnhumby (via Parser Digital)  
+*Apr 2024 – Present | London / Remote, UK*
+
+dunnhumby is a global leader in customer data science, empowering retailers and consumer brands to make customer-first decisions at scale, managing insight from 850 million active customers and analysing over $1.54 trillion in retail sales across more than 30 markets.
+
+Led architectural evolution and delivery for one of the UK’s leading data science platforms in retail analytics. Operating across DevOps, data engineering, and product design, I applied first principles and systems thinking to reshape how engineering teams build and scale services.
+
+- Architected and delivered a **modular, event-driven backend** using Rust and .NET, introducing principles of **data immutability**, **async message-passing**, and **observability-first design**
+- Introduced **micro-frontend architecture**, reducing cross-team coordination overhead and enabling **independent delivery pipelines**
+- Championed **contract-driven development** with Pact, reducing cross-service integration bugs by 40% and improving confidence in parallel delivery
+- Established reusable **Terraform module library** and CI/CD templates (GitHub Actions + ArgoCD), transforming infra delivery from tribal knowledge to standardised platform practice
+- Mentored multiple squads across engineering, QA, and infrastructure; facilitated weekly architecture forums and hands-on pair programming for system literacy
+- Contributed production code weekly in both **Rust** and **C#**, demonstrating delivery leadership and cross-stack fluency
+- Piloted early-stage **LLM-based querying workflows**, helping design “text-to-insight” interfaces with GPT agents over large datasets
+
+> **Patterns Applied:** Event orchestration, contract testing, infrastructure-as-product, platform enablement, distributed logging
+
+> **Tools Used:** Rust, .NET Core, Pact, Terraform, GitHub Actions, Kubernetes, Azure Functions, OpenTelemetry, Kafka
+
+---
+
+### Principal Software Engineer – BrightInsight (Contract)  
+*Apr 2020 – Apr 2024 | Remote*
+
+BrightInsight is a leading global regulated digital health platform for biopharma and medtech, delivering pre built, compliant infrastructure (ISO 13485, HIPAA, GDPR, MDSAP) that accelerates time to market, supports millions of patients, manages over 20 million API calls per day, and scales securely across products, therapy areas, and global markets
+
+Led cross-functional development of regulated digital health platforms, working at the intersection of software engineering, compliance, and AI. Operated across distributed systems, MLOps, and infrastructure automation, with a hands-on approach to system design and team enablement.
+
+- Orchestrated development of **global health data platforms** spanning AWS, Azure, and GCP, applying **modular microservice architecture** and **secure-by-default practices** across Go, JavaScript, and C#
+- Designed a unified **Gherkin-based DSL** for QA, enabling traceable test artefacts across **unit**, **contract (Pact)**, and **BDD** layers — directly mapped to ISO 13485 and IEC 62304 audit requirements
+- Created CI/CD pipelines with embedded **DevSecOps gates**, using GitHub Actions, Terraform, and Ansible to enforce infra compliance pre-deployment
+- Integrated early-stage LLMs to build **predictive models for patient deterioration**, leading to 25% improved detection rates and supporting clinical decision-making workflows
+- Embedded **contract testing** and consumer-driven development across 8 global teams, standardising delivery with shared test harnesses and documentation-as-code
+- Championed the use of **self-describing APIs** and **composable platform modules**, significantly reducing onboarding friction and enabling parallel team autonomy
+- Contributed code daily across stacks, and mentored engineers on regulated delivery, ML-integration pipelines, and cloud-native design
+
+> **Patterns Applied:** Compliance-aware delivery, contract-first testing, platform modularisation, machine learning lifecycle integration
+
+> **Tools Used:** Go, Node.js, TypeScript, C#, Pact, Terraform, Ansible, GitHub Actions, AWS, Azure, PyTorch, TensorFlow, MLflow, Delta Lake
+---
+
+### Technical Director – Baby Point App Ltd  
+*Jan 2019 – Apr 2020 | London / Remote*
+
+Baby Point App Ltd was an early-stage startup that built a geolocation-based discovery app aimed at helping new and expectant parents effortlessly find baby friendly places and resources nearby, using intelligent location insights to simplify local exploration for families.
+
+Led product and platform development for an offline-first mobile app serving new parents with hyper-local support and recommendations. Merged product strategy, UX, API design, and cloud infrastructure to deliver a geospatial content engine built for constrained environments.
+
+- Architected a **geohash-based REST API** to deliver region-specific parenting content with CDN edge distribution; URLs like `/tiles/gb/tn17/parenting/` enabled efficient cache control and sub-second mobile rendering
+- Designed a **SQLite-backed spatial search engine** for mobile devices, enabling fast, offline queries against geoJSON datasets — built once and shared across **React Native** and **Progressive Web App** clients
+- Developed a unified data-fetching and business logic layer shared between web and native apps, promoting **code reuse**, **consistency**, and **resilience under poor connectivity**
+- Delivered ingestion and publishing pipelines for geoJSON content, with server-side partitioning and metadata tagging to support low-latency delivery
+- Supported a rapid MVP cycle — going from zero to 10K organic users in under 6 months — through lean product development and continuous stakeholder feedback
+- Operated hands-on across backend (Node.js + Azure Functions), mobile (React Native), and frontend (PWA), applying full-stack generalist execution from data to UX
+
+> **Patterns Applied:** Offline-first UX, geospatial indexing, shared code across platforms, API surface optimisation, lean product loop
+
+> **Tools Used:** React Native, Node.js, Mapbox GL, SQLite, Azure Functions, Azure Blob Storage, Express.js, TypeScript
+
+---
+
+### Principal Solution Architect – Philips (Contract)  
+*Jan 2019 – Apr 2020 | Remote / Global*
+
+Philips was a global health-technology company headquartered in the Netherlands, focused on diagnostic imaging, image-guided therapy, patient monitoring, health informatics and selected personal-health products. During 2019–2020, the group employed ~80,000 people, operated in 100+ countries, and generated €19.5 billion in 2019 sales—illustrating its scale and footprint across global healthcare systems
+
+Philips is a leading global health technology company delivering innovations across diagnostic imaging, patient monitoring, image-guided therapy, and personal health. With a diversified portfolio and operations spanning more than 100 countries, it is one of the foremost healthcare innovators with tens of thousands of employees worldwide.
+
+Architected and deployed a scalable, AI-powered clinical platform used by 300+ hospitals globally. Bridged software engineering, compliance, and AI model interoperability to enable edge inference, observability, and regulated medical device delivery.
+
+- Designed and led implementation of a **container-based AI application platform**, enabling hospitals to securely deploy and manage ML inference workloads on imaging studies (CT, MRI, X-ray)
+- Spearheaded the development of a **Clinical AI App Store**, supporting third-party models via containerisation and common execution contracts — decoupling diagnostic logic from deployment pipelines
+- Orchestrated integrations with hospital infrastructure using **HL7 and FHIR standards**, creating seamless data pipelines between imaging equipment, PACS/RIS systems, and AI models
+- Created a **diagnosis feedback loop** by tapping into HL7 lab messaging to track downstream confirmations (e.g. cancer) — enabling real-world model validation and clinical QA
+- Applied **Kubernetes operator patterns** to manage application lifecycle in air-gapped, VMWare-based environments, including upgrade orchestration and fault recovery
+- Delivered **high-availability, HA clusters** tailored for hospital-grade resilience; defined compute/storage SLAs and multi-node rollout procedures
+- Ensured ISO 13485 and IEC 62304 compliance through audit-ready deployment infrastructure, test traceability, and automated delivery gates
+- Coordinated global delivery teams (Germany, India, UK), aligning infrastructure, application logic, and security postures across regional requirements
+
+> **Patterns Applied:** Model portability, inference at the edge, HL7 integration, operator-driven orchestration, compliance-aware delivery
+
+> **Tools Used:** Kubernetes (Operator SDK), VMWare, Docker, HL7, FHIR, Azure DevOps, Python, Java, Go, Git, ISO 13485 / IEC 62304 toolchains
+
+---
+
+### Principal Software Engineer – Medisanté AG (Contract)  
+*Mar 2017 – Jan 2018 | Remote / Switzerland*
+
+Medisanté AG is a Swiss-based innovator in medical Internet of Things, enabling seamless integration of patient‑generated health data into healthcare systems via its M + Hub platform. Operating from Lucerne, the company powers global cellular connectivity for remote patient monitoring, offering plug‑and‑play device interoperability and privacy‑first design for caregivers and clinical systems.
+
+Served as lead architect for a regulated medical IoT platform enabling GSM-connected devices to transmit health telemetry directly from patients' homes to clinicians — without requiring Wi-Fi, pairing, or user setup.
+
+- Designed the **end-to-end device-to-cloud architecture**, integrating embedded Java on health devices with a fully serverless backend using AWS Lambda, DynamoDB, and API Gateway
+- Developed secure, embedded firmware logic for certificate management, telemetry batching, and network reconciliation on constrained hardware platforms with limited ROM/RAM
+- Pioneered use of **“shadow devices”** (digital twins) to manage asynchronous operations from intermittently connected devices, handling latency, power cycles, and data integrity
+- Built a **real-time access control system** using fine-grained role-based permissions tied to patient consent, clinician identity, and departmental hierarchies
+- Refactored monolithic architecture into **event-driven microservices**, improving scalability, testability, and audit traceability in line with ISO 62304 Class C
+- Delivered observability and telemetry pipelines using AWS CloudWatch, enabling anomaly detection and device state drift reporting in production
+- Acted as technical liaison between embedded engineering, cloud infrastructure, and clinical partners — ensuring alignment across domains with strong documentation and traceable requirements
+
+> **Patterns Applied:** Digital twin design, serverless microservices, role-based access modelling, telemetry resilience, secure embedded messaging
+
+> **Tools Used:** Embedded Java, AWS Lambda, DynamoDB, API Gateway, S3, CloudWatch, JavaScript, MQTT, ISO 62304 Class C workflows
+
+
+---
+
+### Lead Mobile Developer – Investec Bank Plc (Contract)  
+*Feb 2017 – Mar 2017 | London, UK*
+
+Here’s a concise company blurb for your CV:
+
+**Investec Bank plc** is the UK arm of Investec, an Anglo-South African specialist banking group that is dual-listed in London and Johannesburg and a constituent of the FTSE 250. In the UK it provides private, corporate and investment banking—ranging from “always-on” private banking and award-winning savings to an investment bank specialising in the UK equity market. In 2023, Investec’s UK wealth business combined with Rathbones to form the UK’s leading discretionary wealth manager, while Investec continues to focus on specialist banking for private, corporate and institutional clients.
+
+
+
+Led development of internal productivity tools across iOS, Android, and Windows platforms for secure collaboration and wayfinding within Investec’s enterprise environment.
+
+- Delivered a suite of **cross-platform mobile apps** for internal collaboration, hot-desking, and document sharing — tailored to the bank’s security and compliance requirements
+- Developed a **colleague locator app** using iBeacons and Wi-Fi triangulation, enabling real-time workspace navigation across large office floors
+- Integrated all applications with **Microsoft Intune**, enabling robust MDM/MAM policies and secure access control at both device and app level
+- Added native **SharePoint integration** to allow secure document access, version control, and upload workflows from mobile clients
+- Customised an open-source corporate social platform using **native Swift**, **Java**, and **React Native** to support profiles, event feeds, and internal video streaming
+- Facilitated lean delivery cycles by working directly with internal stakeholders to scope and prototype features iteratively, using metrics to inform minimal viable functionality
+
+> **Patterns Applied:** Secure BYOD enablement, proximity-based UX, MDM/MAM integration, mobile-first productivity design
+
+> **Tools Used:** Swift, Java (Android), React Native, iBeacons, Microsoft Intune, SharePoint, Node.js, Express, Wi-Fi geolocation
+
+---
+
+### Lead Consultant – ThoughtWorks Ltd  
+*Feb 2015 – Feb 2017 | London, UK*
+
+ThoughtWorks Ltd is the UK arm of Thoughtworks, a global technology consultancy known for pioneering agile, continuous delivery and the twice-yearly Technology Radar. In 2015–2017 the group operated across 42 offices in 15 countries with ~4,500 employees worldwide, and the UK entity had 250–499 employees. In 2017, funds advised by Apax Partners agreed to acquire the company. 
+
+Delivered complex, multi-squad software systems in finance and insurance, while mentoring engineers, facilitating architectural alignment, and fostering cross-functional delivery culture. Operated as both a hands-on engineer and systems thinker in high-variability client environments.
+
+- Acted as **technical delivery lead** across concurrent streams, proactively managing dependencies and coordinating design trade-offs across product, architecture, and engineering squads
+- Mentored engineers across experience levels, introducing **pattern libraries**, pair programming routines, and sustainable refactoring practices to embed delivery maturity
+- Led the design and implementation of a **domain-specific language (DSL)** for underwriters, using an iterative delivery model to rapidly converge on production logic with domain experts
+- Delivered a **polyglot microservices platform** using .NET, Go, Node.js, and Nancy, supporting multiple insurance products with loosely coupled deployment boundaries
+- Designed and embedded continuous delivery pipelines and **contract testing strategies** to enable safe, frequent deployment in regulated environments
+- Co-delivered a **Xamarin-based cross-platform mobile app** and contributed to the open-source **D-CENT** project (Clojure), supporting democratic digital participation across Europe
+- Organised internal knowledge-sharing rituals (Communities of Practice, Hackathons, Away Days) to strengthen cross-team architectural literacy
+
+> **Patterns Applied:** DSL design, microservice decomposition, continuous delivery, knowledge scaffolding, client-centred consulting
+
+> **Tools Used:** .NET Core, NancyFX, Go, Node.js, Xamarin, Pact, TeamCity, Git, Clojure, Docker, AWS, OpenAPI
+
+
+---
+
+### Mobile Tech Lead – Ernst & Young (EY) (Contract)  
+*Sep 2014 – Feb 2015 | London, UK*
+
+Ernst & Young (EY) was one of the Big Four professional services firms, providing assurance, tax, transaction and advisory services to global enterprises and governments. During 2014–2015 it operated across 150+ countries with a workforce of just over 200,000 people and global revenues in the high-$20bn range—illustrating its scale, sector reach and focus on large-scale digital and mobile transformation for clients.
+
+Led distributed teams in the delivery of secure, cross-platform mobile solutions as part of a global BYOD initiative for EY’s Fraud Investigation & Dispute Services division. Operated at the intersection of security architecture, mobile UX, and regulated enterprise integration.
+
+- Directed offshore development teams building native and hybrid apps across **iOS**, **Android**, **Windows Phone**, and **Windows 8.1**, with shared backend services and unified deployment workflows
+- Collaborated with enterprise architects to implement **Citrix XenMobile-based MDM/MAM** strategies, securing data and application access at the device and organisational levels
+- Designed and implemented a robust **OAuth2/OpenID Connect** identity system to enable claims-based authorisation and delegated access control across apps and web portals
+- Delivered several rapid **proof-of-concept applications** using **Xamarin**, **Cordova/PhoneGap**, and **ASP.NET WebAPI**, validating enterprise capabilities under tight compliance constraints
+- Facilitated agile planning and stakeholder demos while acting as technical integrator across cloud, mobile, and legacy authentication stacks
+
+> **Patterns Applied:** Federated identity modelling, MDM/MAM orchestration, hybrid mobile strategy, secure token exchange
+
+> **Tools Used:** Xamarin, Xamarin.Forms, Cordova, OAuth2, OpenID Connect, ASP.NET WebAPI, Citrix XenMobile, OWIN, Node.js, Active Directory
+
+
+---
+
+### Senior Engineer – McKinsey Digital Labs (Contract)  
+*Jun 2014 – Sep 2014 | London, UK*
+
+McKinsey Digital Labs (MDL) was McKinsey’s product-engineering arm, embedding designers and engineers with strategy teams to build production software. In 2014–2015 it delivered for blue-chip enterprises and government departments—including Fortune/FTSE 100-scale clients across banking, telecoms, retail, and the public sector—often as multi-country, high-scale digital programmes within McKinsey’s global network.
+
+Brought in as a specialist contractor to rescue a strategically critical BI platform for a major retail client. Applied deep diagnostic skill and cross-stack engineering to rapidly stabilise the system and restore delivery velocity.
+
+- Diagnosed and resolved **severe memory leaks and front-end performance bottlenecks** in an AngularJS single-page application used for retail analytics and decision support
+- Optimised rendering and data binding logic to improve responsiveness under heavy load, using Chrome DevTools and memory profiling to identify GC pressure and reflow traps
+- Operated across frontend and backend using **JavaScript**, **F#**, **C#**, **ASP.NET MVC 5**, **WebAPI**, and **WCF**, working within a high-stakes delivery environment
+- Collaborated with business analysts, UX designers, and QA to align fixes with acceptance criteria and production validation cycles
+- Acted as a trusted problem-solver during delivery crunch periods, applying systems thinking and strong debugging patterns under high time pressure
+
+> **Patterns Applied:** Deep diagnostics, SPA performance tuning, front-to-back traceability, tactical rescue delivery
+
+> **Tools Used:** AngularJS, F#, C#, ASP.NET MVC 5, WebAPI, WCF, SQL Server 2014, Chrome DevTools, Visual Studio
+
+
+---
+
+### Lead Engineer / Architect – Blackthorn Technologies (Contract)  
+*Mar 2013 – Apr 2014 | London, UK*
+
+Blackthorn GRC was a UK software provider that built secure case-management systems for government and law-enforcement, covering investigations and enforcement domains (e.g., immigration, food standards, modern slavery). Its platforms also supported public-sector correspondence/FOI/SAR workflows and other GRC use cases, and were certified for handling data up to OFFICIAL with audit trails and role-based access, deployable on-prem or in the cloud. Beyond central and local government, Blackthorn’s case-management solutions were used across banking, military and aerospace clients.
+
+Architected and delivered a secure, distributed case management platform for UK law enforcement, integrating directly with Crown Prosecution Service (CPS) systems. Combined domain modelling, regulatory alignment, and platform leadership to support critical criminal justice workflows.
+
+- Designed a greenfield **compliance and evidence management system** using **Domain-Driven Design (DDD)** to model core bounded contexts and define a ubiquitous language with CPS stakeholders
+- Architected a RESTful, **HATEOAS-style API layer** to enable clean decoupling between web clients and backend services, improving maintainability and audit traceability
+- Delivered the system on **Windows Azure**, supporting geo-distribution, elastic scaling, and managed identity integration
+- Built the platform using ASP.NET MVC 4, WebAPI, MongoDB, and SQL Server, balancing consistency and performance across structured and unstructured data domains
+- Led security architecture and **SC-cleared delivery** to ensure system resilience, encryption at rest/in transit, and fine-grained role-based access control
+- Introduced continuous deployment pipelines with **Octopus Deploy**, enabling safe, testable releases into production-like staging environments
+- Recruited and led a team of polyglot engineers versed in SOLID principles, test automation, and Agile delivery
+
+> **Patterns Applied:** DDD, HATEOAS API design, compliance-driven architecture, multi-boundary orchestration, secure domain modelling
+
+> **Tools Used:** ASP.NET MVC 4, WebAPI, MongoDB, SQL Server, Octopus Deploy, Azure, OAuth2, SC Clearance
+
+
+---
+
+### Senior Analyst Engineer – Credit Suisse (Contract)  
+*Jul 2012 – Mar 2013 | London, UK*
+
+Credit Suisse was a global investment bank and wealth manager headquartered in Zürich. In 2012–2013 it operated in 50+ countries, served ~2.2 million clients, and managed ~CHF 1.28 trillion in assets under management, with a worldwide workforce of ~46,000. Its divisions—Private Banking & Wealth Management, Asset Management, and Investment Banking—served corporate, institutional, government, and UHNW/HNW clients.
+
+Contributed to the design and delivery of high-performance trading and pricing platforms for complex derivatives and structured products, used by thousands of high-net-worth clients across global markets.
+
+- Engineered a **low-latency pricing engine** to support real-time valuation of complex financial instruments, applying caching, async computation, and decoupled data access strategies
+- Developed a **Silverlight-based trading interface** following Windows 8 “Metro” UX guidelines, later supporting migration toward HTML5 for tablet/browser compatibility
+- Built a service abstraction layer using **WCF (SOAP)**, **RESTful APIs**, **Unity**, and **Prism**, enabling modular frontends to interact cleanly with multiple internal banking systems
+- Led technical assimilation of legacy platforms (Python, Java, Ruby) into Credit Suisse’s standardised .NET ecosystem, reducing maintenance overhead and operational complexity
+- Participated in the **Clariden Leu trading platform merger**, helping to integrate financial product workflows and shared data pipelines
+- Migrated visual components and workflows from Silverlight to modern web frameworks, enabling broader accessibility and device support
+
+> **Patterns Applied:** Real-time pricing, cross-system abstraction, legacy assimilation, UI migration, async computation
+
+> **Tools Used:** Silverlight, C#, WPF, Prism, WCF, REST, Unity (IoC), Java, Python, SQL Server, HTML5
+
+
+---
+
+### Engineering Manager – Miomni LTD (Contract)  
+*Jan 2012 – Jul 2012 | London, UK*
+
+Miomni Ltd was a UK gaming-technology provider delivering B2B, white-label sportsbook and iCasino platforms for operators across retail and online. Through its Miomni Gaming arm, it built mobile wagering products for major US sportsbooks—most notably powering the Westgate Las Vegas SuperBook app for Nevada bettors. UK operations sat under the Miomni group of companies registered at Companies House.
+
+Led a 15-person engineering team to deliver cross-platform digital media and sports applications across web, mobile, and connected devices. Bridged design, infrastructure, and broadcast content to create real-time, event-driven user experiences.
+
+- Delivered the **official PGA Tour app for Windows Phone 7** in partnership with Nokia and Microsoft, meeting strict performance, usability, and store approval criteria
+- Orchestrated multi-platform development across **iOS**, **Android**, **Windows 8 (WinRT)**, and connected TV — with shared components and coordinated release pipelines
+- Oversaw the migration from SQL Server CMS to **RavenDB**, enabling more scalable, flexible content delivery and schema evolution
+- Built a **Connected TV application layer** integrating social feeds and live event streams, powered by **Reactive Extensions (Rx)** and real-time data sync
+- Used **async C# and Rx** to create a reactive content pipeline aggregating multiple social and event APIs into cohesive app experiences
+- Introduced Agile delivery frameworks (Scrum + Kanban), bringing transparency and velocity to delivery and stakeholder engagement
+- Acted as a product–engineering bridge, aligning UI/UX teams with backend devs and client stakeholders to ship MVPs under tight timelines
+
+> **Patterns Applied:** Reactive content aggregation, multi-platform orchestration, schema-less CMS migration, real-time feed processing
+
+> **Tools Used:** C#, .NET, WinRT, Rx, RavenDB, Xamarin, iOS, Android, Windows Phone 7, Agile (Scrum/Kanban), EPOS, social API integration
+
+
+---
+
+### Senior Engineer – Alpari UK (Contract)  
+*Nov 2011 – Jan 2012 | London, UK*
+
+Alpari (UK) Limited was the London arm of the Alpari Group—an FSA-regulated FX/CFD broker—serving retail and professional clients on MetaTrader 4/5 with ECN execution from its City base. In 2011–2012 it ranked among the larger retail FX brokers globally; industry reports later put its client base at 100,000+.
+
+Delivered real-time risk, reporting, and process automation tools for a global FX trading firm. Operated across capital reporting, workflow orchestration, and CRM integration in a tightly regulated, low-latency trading environment.
+
+- Built a **Real-Time Capital Calculation Reporting system** using **Silverlight**, **MVVM**, **Reactive Extensions (Rx)**, and **WCF Duplex Services**, enabling immediate insight into client and firm risk exposure
+- Integrated long-running workflows in **Windows Workflow Foundation (WF 4.0)** with a customised **SugarCRM** instance to automate compliance hand-offs between departments (client services, finance, legal)
+- Developed a **low-latency alerting engine** with asynchronous messaging and parallel rule evaluation to notify risk managers of potential breaches or thresholds
+- Built a secure, self-service **client portal** enabling customers to manage their trading accounts across MT4, MT5, and Currenex platforms
+- Modelled data access and visibility through **claims-based security**, ensuring compliance with internal audit controls and FCA oversight
+- Introduced improved data handling strategies to reduce risk calculation lag and support high-volume peak-time reporting
+
+> **Patterns Applied:** Real-time alerting, CRM workflow orchestration, reactive UI, capital exposure modelling, compliance automation
+
+> **Tools Used:** Silverlight, C#, MVVM, WF 4.0, WCF Duplex, Reactive Extensions (Rx), ASP.NET MVC 3, MySQL, SugarCRM
+
+
+---
+
+### Lead Engineer – Just Eat  
+*May 2011 – Nov 2011 | London, UK*
+
+Just Eat was a fast-growing online takeaway marketplace connecting consumers with local restaurants via web and mobile. I joined just before the Canada launch; at that point the company operated across six European countries (UK, Ireland, Denmark, Netherlands, Belgium, Sweden), worked with ~6,000 restaurants (c.3,000 in the UK), and was processing ~1 million meals per month across Europe.
+
+Joined as one of the first 20 technical hires to stabilise and scale a rapidly growing food delivery platform. Led key initiatives to modernise architecture, introduce deployment automation, and enable international expansion through pragmatic engineering.
+
+- Re-architected core systems originally built as student prototypes, introducing **layered design patterns**, automated test coverage, and maintainable deployment flows
+- Migrated from legacy ASP.NET WebForms to a modern **ASP.NET MVC 3** foundation, improving separation of concerns and enabling team growth
+- Supported internationalisation by adapting platform services for rollout to two new European markets, coordinating payment, language, and logistics adjustments
+- Built an automated deployment pipeline using **Ruby** and **Jenkins**, reducing release risk and enabling regular, fast deploys with rollback capabilities
+- Reverse-engineered and integrated **EPOS printer systems**, enabling direct order acceptance/rejection by restaurants — a key step in real-time operational visibility
+- Led squad-level Agile ceremonies, retrospectives, and technical design discussions to embed delivery discipline and sustainable engineering growth
+
+> **Patterns Applied:** Platform stabilisation, reverse engineering, CI/CD enablement, internationalisation, pragmatic re-architecture
+
+> **Tools Used:** ASP.NET MVC 3, Ruby, Jenkins, SQL Server, EPOS hardware integration, WebForms, IIS
+
+
+---
+
+### AI Engineer – Microsoft Research (Contract)  
+*Feb 2011 – May 2011 | Cambridge, UK*
+
+Microsoft Research was Microsoft’s global research division; around 2011 it had ~850 PhD-level researchers working across labs worldwide, advancing areas from AI and computer vision to systems and HCI, with a strong pipeline into Microsoft products. 
+
+Worked under the direct supervision of **Pushmeet Kohli** (now VP of Science & Strategic Initiatives at Google DeepMind), supporting experimental ML research by building data-driven web and mobile applications that bridged academic models and scalable real-world tooling.
+
+- Developed Facebook-integrated web and mobile apps to crowdsource labelled data (images, video, text) for training machine learning models — an early form of **human-in-the-loop data collection**
+- Designed and implemented **MLOps-style pipelines** using **Windows Azure Cloud Services**, handling ingestion, validation, storage, and asynchronous processing at scale
+- Created internal tools to support dataset visualisation and annotation workflows for ML researchers working on **Kinect**, **Photosynth**, and early facial/body tracking models
+- Delivered Silverlight apps using **MVVM architecture** on Windows Phone 7 to capture sensor-driven input from mobile users, later used to refine model assumptions
+- Built backend APIs and dashboards using **ASP.NET MVC 3**, Razor, and SQL Azure, with secure user authentication and Facebook graph integrations
+
+> **Patterns Applied:** Data labelling at scale, MLOps bootstrapping, social-integrated data collection, cloud-based experimentation
+
+> **Tools Used:** Azure Cloud Services, Silverlight, ASP.NET MVC 3, Razor, SQL Azure, MVVM, Windows Phone 7, Facebook C# SDK, C#
+
+
+
+---
+
+### Lead Software Engineer – How Splendid Ltd (Contract)  
+*Apr 2010 – Feb 2011 | London, UK*
+
+How Splendid Ltd was a London-based digital design & development consultancy building large-scale web and mobile platforms for blue-chip enterprises including Barclaycard, Boots, eBay, News UK, SSE, Star Alliance and others. It was later acquired (majority stake 51%) by Creston plc and folded into the Creston/Unlimited group’s digital consultancy offering.
+
+Served as lead engineer and solution architect on multiple digital transformation initiatives for clients in retail, ecommerce, transport, and equipment rental. Applied modern architectural patterns and emerging UX technologies to deliver scalable, testable, and customer-facing systems.
+
+- Led the development of **SpeedyServices.com**, applying **CQRS**, **SOA**, and **DDD** to build a robust ecommerce and hire booking platform from scratch using ASP.NET MVC, WCF, Entity Framework, and PostSharp
+- Created a proof-of-concept mobile booking system for **Windows Phone 7** using Silverlight, OData, and MVVM — validating mobile demand for tool hire and on-site logistics
+- Delivered a **multi-touch, WPF-based EPOS kiosk** in under two weeks for Tesco, enabling self-service hardware rental in showroom environments
+- Built interactive showroom apps using **Microsoft Surface Table (v1)**, pushing the boundaries of multi-user UX in physical retail spaces
+- Delivered a **dynamic pricing engine** for National Express, one of the UK’s earliest demand-responsive pricing tools for transport ecommerce
+- Spearheaded early adoption of **XAML, async patterns**, and **multi-platform delivery techniques** across agency clients, while guiding younger engineers in scalable systems design
+
+> **Patterns Applied:** CQRS, SOA, multi-touch UX, async client-server, real-time pricing optimisation
+
+> **Tools Used:** ASP.NET MVC, Entity Framework, WCF, PostSharp, Silverlight, WPF, MVVM, OData, RavenDB, Surface Table SDK, SQL Server
+
+---
+
+### Lead Software Engineer → Senior Engineer – Live Nation  
+*May 2008 – Apr 2010 | London, UK*
+
+Live Nation was the world’s largest live-music promoter. During 2008–2010 it staged ~22,000 concerts a year for ~1,500–2,000 artists across 33–57 countries, drawing 50M+ attendees annually; after merging with Ticketmaster in 2010, the combined group still promoted 21,000+ events that year.
+
+Promoted from Senior Engineer to Lead Software Engineer during a pivotal greenfield CMS initiative. Led delivery of scalable content syndication, domain management, and multilingual publishing across 15+ international markets.
+
+#### 🟢 Lead Software Engineer (May 2009 – Apr 2010)
+- Led engineering efforts on a multi-domain, multilingual content and event management platform powering the Live Nation web presence across Europe
+- Designed and built a scalable **content distribution API** integrated with Ticketmaster, enabling high-availability syndication and editorial workflows
+- Introduced **test-driven development**, **continuous integration**, and **XP practices**, fostering a strong engineering culture across distributed teams
+- Provided architectural leadership during the migration from legacy .NET 1.1 WebForms to modern **ASP.NET MVC** with NHibernate and WCF
+
+#### 🟡 Senior Engineer (May 2008 – May 2009)
+- Helped develop the platform’s core CMS and event tooling, contributing across backend and frontend services using early ASP.NET MVC (Preview → RC)
+- Participated in global rollout planning and content modeling across 15+ LiveNation.xx properties
+- Practiced **pair programming**, SOLID principles, and helped establish internal open-source libraries for cross-market UI consistency
+
+> **Patterns Applied:** CMS architecture, distributed content sync, domain multi-tenancy, XP discipline, high-availability design  
+> **Tools Used:** ASP.NET MVC (Preview → V1), NHibernate, WCF, Moq, FitNesse, Castle Windsor, StructureMap, SQL Server, TFS
+
+
+---
+
+### Senior Engineer → Junior Developer – DesignSquad.net  
+*Feb 2001 – May 2008 | London, UK*
+
+Progressed from Junior Developer to Senior Engineer over 7+ years at a digital agency delivering bespoke software solutions for small and mid-sized businesses. Worked across the full stack and evolved with each wave of web development — from early .NET through to AJAX-era interactivity and XML-driven systems.
+
+#### 🟢 Senior Engineer (Aug 2002 – May 2008)
+- Delivered full-stack web and desktop applications for clients in ecommerce, logistics, property, and internal tooling using **ASP.NET**, **VB6**, **XML/XSL**, and **SQL Server**
+- Built and maintained internal CMSs, customer portals, inventory tools, and scheduling apps for SMEs using Microsoft tech stacks (1.0 → 2.0)
+- Introduced **separation of concerns**, **component reuse**, and **code generation patterns** to improve delivery efficiency and reduce regressions
+- Led small development pods on larger projects and contributed to early **SharePoint customisations**, Flash integrations, and reporting dashboards
+
+#### 🟡 Junior Developer (Feb 2001 – Aug 2002)
+- Built custom admin dashboards, forms-based CRUD systems, and static websites using **ASP**, **HTML**, **JavaScript**, and **VBScript**
+- Learned foundational development principles, debugging skills, and client communication through regular feedback loops with business owners
+- Maintained internal developer documentation and contributed to the agency’s evolving design system and UI component library
+
+> **Patterns Applied:** Monolith to multi-tier evolution, CMS componentisation, procedural to OO transition, rapid prototyping  
+> **Tools Used:** ASP.NET (1.0/1.1/2.0), VB6, VBScript, XML, XSLT, XPath, JavaScript, SQL Server, SharePoint, Flash
+
+
+---
+
+## 📜 Certifications
+
+- **Supervised Machine Learning** – Stanford / DeepLearning.AI (2025)  
+- Microsoft Certified: Programming in C#  
+- Microsoft Certified: HTML5, JavaScript and CSS3  
+- Certified Scrum Master (CSM)  
+- Udi Dahan: Advanced Distributed Systems Design  
+
+---
+
+## 🎓 Education
+
+- **BSc Computer Networks** – Middlesex University, London (2004–2007)  
+- **BSc Computer Systems Security** – Swansea Institute, UK (2002–2004)  
+
+---
+
+## 🛡 Security Clearance
+
+- ✅ Security Check (SC) – Held  
+- ✅ Counter Terrorist Check (CTC) – Held  
+
+---
+
+## 🧾 Additional Details
+
+- Led orgs of up to **200 engineers**  
+- Always remain **20–30% hands-on** in all roles  
+- Work across **startups, scaleups, enterprise, and regulated** industries  
+- Mentor & coach engineers across seniority levels  
+- Fluent in **cross-functional collaboration** and **systems thinking**  
+- Advocate for **pattern-based software**, not tool-based silos  
+
+===== END INPUT B =====
+
+
+===== INPUT A: JOB_SPEC =====
+Runna
+
+Runna is a running training app that acts as a personalized running coach, providing tailored training plans, expert guidance, and integration with devices like Garmin and Apple Watch to support runners at all levels. Runna is widely praised for making structured, expert running training accessible without the cost of a personal coach and is currently regarded as a leading app in the running community.
+
+ 
+
+CV Tips:
+
+Evidence of your managerial skills experience (size of the teams, are they cross functional?)
+Extensive mobile application development and architectural experience – try and share what apps you have developed
+Your AWS experience
+Runna will be eager to see that you have used the tech stack they are using (full stack java script – Typescript, Node, React Native, AWS, Python)
+ 
+
+Interview Process:
+
+Getting to Know You + Live Coding (45-minute video call, first 25 mins will be an introductory chat followed by two live coding exercises from https://leetcode.com/)
+Take home technical task (max 1-2 hours to complete, or if you have something interesting you recently built and would like to showcase then that's perfectly OK)
+1.5-hour technical interview (the first half of the call will be used to discuss the take-home technical task from the previous stage and the second half will consist of system design and some general architecture/tech questions)
+ 
+
+If you would like to be considered for this position, please email me back that you would like to be considered for the position and are happy to be represented by me. If you could send me a tailored version of your CV that you have brought in line with the requirements for this position, this will give you the best chance at securing an interview.
+
+Engineering Lead (Staff)
+London
+We&#39;re putting together a talented team to build the #1 training platform for
+Runners
+We help everyday runners become outstanding by providing world-class training,
+coaching and community for everyone, whether you&#39;re improving your 5k time or
+training for your first marathon. To date we have built iOS, Android and Apple watch
+apps that help people achieve their goals by coaching them through the full journey
+and syncing to their favourite fitness devices.
+We’re growing extremely fast! In November 2023 we closed a $6.5M funding round
+led by JamJar with participation from Eka Ventures, Venrex and Creator Ventures. In
+2024, we were selected by Apple as one of three global finalists for the 2024 iPhone
+App of the Year, reflecting the innovation and impact of what we’ve built &amp; now in
+
+ ===== END INPUT A =====
