@@ -1,6 +1,11 @@
 .env
 *.env
 *.env.local
+CV_Customized_*.docx
+*.docx
+*.dotx
+*.pdf
+.~lock.*
 tailored_resume.json
 # Generated CV files
 CV_Customized*.docx

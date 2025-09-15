@@ -1,1 +1,125 @@
-{"summary":"I am an expert generalist with over 20 years of cross-functional software delivery experience, uniquely combining deep engineering skill with adaptive systems thinking. I excel in building and scaling platforms, particularly in the ERP space, and have a strong focus on leveraging AI to enhance product offerings. My career spans multiple domains, including FinTech, HealthTech, and AI, where I have consistently delivered impactful solutions by connecting technical depth with strategic execution.","skills":["Product Management","AI Integration","Microservices Architecture","Cloud Computing","DevOps","Cross-Functional Leadership","Agile Methodologies","Stakeholder Engagement","Data-Driven Decision Making","Compliance and Security","Systems Thinking","Technical Mentorship","Continuous Delivery","User-Centric Design","Distributed Systems","Observability"],"work_experience":[{"job_title":"Technical Lead","company":"dunnhumby","location":"London / Remote, UK","start_date":"Apr 2024","end_date":"Present","company_blurb":"dunnhumby is a global leader in customer data science, empowering retailers and consumer brands to make customer-first decisions at scale.","responsibilities":["Led architectural evolution and delivery for a leading data science platform in retail analytics.","Applied first principles and systems thinking to reshape engineering team workflows.","Architected and delivered a modular, event-driven backend using Rust and .NET.","Championed contract-driven development, reducing integration bugs and improving delivery confidence.","Established reusable Terraform module library and CI/CD templates."],"achievements":["Reduced cross-service integration bugs by 40%.","Accelerated delivery through improved architectural practices and team mentorship.","Contributed production code weekly in both Rust and C#."]},{"job_title":"Principal Software Engineer","company":"BrightInsight","location":"Remote","start_date":"Apr 2020","end_date":"Apr 2024","company_blurb":"BrightInsight is a leading global regulated digital health platform for biopharma and medtech.","responsibilities":["Led cross-functional development of regulated digital health platforms.","Orchestrated development of global health data platforms across AWS, Azure, and GCP.","Designed a unified Gherkin-based DSL for QA, enabling traceable test artefacts.","Created CI/CD pipelines with embedded DevSecOps gates.","Integrated early-stage LLMs to build predictive models for patient deterioration."],"achievements":["Improved detection rates by 25% through predictive model integration.","Standardised delivery across 8 global teams with shared test harnesses."]},{"job_title":"Technical Director","company":"Baby Point App Ltd","location":"London / Remote","start_date":"Jan 2019","end_date":"Apr 2020","company_blurb":"Baby Point App Ltd built a geolocation-based discovery app for new and expectant parents.","responsibilities":["Led product and platform development for an offline-first mobile app.","Architected a geohash-based REST API for region-specific content delivery.","Developed a SQLite-backed spatial search engine for mobile devices.","Supported rapid MVP cycles through lean product development."],"achievements":["Achieved 10K organic users in under 6 months."]}],"early_career":[{"title":"Principal Solution Architect","company":"Philips","dates":"Jan 2019 – Apr 2020"},{"title":"Lead Mobile Developer","company":"Investec Bank Plc","dates":"Feb 2017 – Mar 2017"},{"title":"Lead Consultant","company":"ThoughtWorks Ltd","dates":"Feb 2015 – Feb 2017"},{"title":"Mobile Tech Lead","company":"Ernst & Young (EY)","dates":"Sep 2014 – Feb 2015"}]}
+{
+  "summary": "DevSecOps Architect and Agile Coach with a proven track record leading portfolio and product transformations, building SRE practices, and designing CI/CD at scale. Experienced in stakeholder management, Lean Portfolio Management (LPM), and improving operational maturity and reliability across complex application estates. Passionate about creating cultures of experimentation, automation, and continuous improvement.",
+  "skills": [
+    "DevSecOps",
+    "Agile Coaching",
+    "Site Reliability Engineering (SRE)",
+    "CI/CD Pipeline Design",
+    "Lean Portfolio Management (LPM)",
+    "OKRs",
+    "Stakeholder Management",
+    "Azure",
+    "Threat Modeling",
+    "Jira",
+    "Confluence",
+    "Bitbucket",
+    "Bamboo",
+    "Git",
+    "Docker",
+    "Python",
+    "Java / Spring Boot",
+    "Data Integration",
+    "Systems Integration",
+    "Budget Oversight",
+    "Continuous Improvement",
+    "Kanban",
+    "Scrum",
+    "Test Automation (Selenium/WebDriver)",
+    "Hadoop/Spark Ecosystem"
+  ],
+  "work_experience": [
+    {
+      "job_title": "Senior Program Manager (DevSecOps Architect, Agile Coach)",
+      "company": "HCLTech",
+      "location": "London, United Kingdom",
+      "start_date": "Nov 2018",
+      "end_date": "Present",
+      "company_blurb": "HCLTech is a global technology company providing digital, engineering, and cloud services to enterprises worldwide.",
+      "responsibilities": [
+        "Designed and implemented DevSecOps transformation at portfolio and application levels, building CI/CD pipelines and coaching teams.",
+        "Created and led an SRE practice to improve application reliability and automation adoption.",
+        "Co-created value streams to identify improvement opportunities and align to business outcomes.",
+        "Implemented Lean Portfolio Management (LPM) to focus initiatives on vision and strategy.",
+        "Drove cloud and DevSecOps transformation: migrated large app estate from on‑prem to Azure and introduced threat modeling.",
+        "Established an Agile CoE, training academy, and learning chapters (Security, Product, Scrum/Agile, Java, .NET, DevOps).",
+        "Built an app improvement/investment roadmap aligned to strategy and tracked using OKRs."
+      ],
+      "achievements": [
+        "Increased site reliability score for all critical apps from Level 2: Developing to Level 3: Defined.",
+        "Reallocated ~40% of budget and reduced overall spend by ~£3m via LPM.",
+        "Migrated ~725 applications to Azure; established repeatable build/deploy patterns used by 20+ apps.",
+        "Reduced OpEx by ~12% and CapEx by ~23% through roadmap-driven investment.",
+        "Reduced attrition by ~7%, improved security coverage by ~7%, and upskilled ~25% of developers by one maturity level."
+      ]
+    },
+    {
+      "job_title": "Agile Coach",
+      "company": "UK government",
+      "location": "United Kingdom",
+      "start_date": "Jul 2018",
+      "end_date": "Nov 2018",
+      "company_blurb": "Government engagement supporting agile delivery in a fixed price, fixed scope context.",
+      "responsibilities": [
+        "Implemented pragmatic agile processes within fixed price, fixed scope constraints.",
+        "Introduced approaches to manage technical debt and discovery spikes.",
+        "Improved code quality via peer and technical reviews; facilitated knowledge sharing across teams.",
+        "Scaled from 1 scrum team to 4 within a two‑week sprint."
+      ],
+      "achievements": [
+        "Reduced rework and improved delivery flow via improved review practices and scaling.",
+        "Established mechanisms for technical debt visibility and remediation."
+      ]
+    },
+    {
+      "job_title": "DevOps Coach",
+      "company": "Altran",
+      "location": "Bath, United Kingdom",
+      "start_date": "May 2017",
+      "end_date": "Feb 2018",
+      "company_blurb": "Altran (now Capgemini Engineering) provides engineering and R&D services across industries.",
+      "responsibilities": [
+        "Implemented automated CI/CD pipelines using Bitbucket, Bamboo, Jira, and Confluence across the SDLC.",
+        "Created a culture of continuous improvement; delivered tooling sessions and onboarding.",
+        "Built automation scripts for Jira project setup, dashboards, and syncing with Trac via Bamboo.",
+        "Developed automated platform creation using Docker and Python."
+      ],
+      "achievements": [
+        "Accelerated delivery and reporting through end‑to‑end pipeline automation.",
+        "Improved developer productivity with standardized environments and automation."
+      ]
+    },
+    {
+      "job_title": "Agile Coach / Scrum Master / Data Analyst",
+      "company": "Capgemini",
+      "location": "United Kingdom",
+      "start_date": "Apr 2013",
+      "end_date": "May 2017",
+      "company_blurb": "Capgemini is a global leader in consulting, technology services, and digital transformation.",
+      "responsibilities": [
+        "Trained ~400 staff on Jira/Confluence; rolled out PMO reporting frameworks for DevOps.",
+        "Formed DevOps team delivering Big Data and Digital POCs; established CI/CD with Bamboo and Git.",
+        "Built Java/Spring Boot APIs; implemented log aggregation with Flume and Cloudera Search.",
+        "Enabled real‑time data analysis using Spark, Sqoop, HBase, and Hive.",
+        "Facilitated Kanban for microservice delivery; onboarded and trained new team members.",
+        "As Scrum Master for SA Feature Team, delivered enhancements and increased margin significantly.",
+        "Introduced streamlined maintenance approval processes and DoD definitions; ran hack days and training."
+      ],
+      "achievements": [
+        "Delivered multiple releases impacting millions of end users.",
+        "Automated JUnit creation to reduce manual rework in Java services."
+      ]
+    }
+  ],
+  "early_career": [
+    {
+      "title": "Test Analyst / Environment Support",
+      "company": "Capgemini",
+      "dates": "Oct 2011 – Apr 2013"
+    },
+    {
+      "title": "Operations Manager",
+      "company": "Royal Mail",
+      "dates": "Apr 1997 – Sep 2011"
+    }
+  ]
+}
