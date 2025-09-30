@@ -32,6 +32,19 @@ python tailor_cv.py 'https://example.com/job-posting' \
 # Output: tailored_resume.json
 ```
 
+## Update resume_data.json from LinkedIn
+From a LinkedIn PDF export, URL or a plain text file:
+```bash
+. .venv/bin/activate
+# PDF
+python update_from_linkedin.py --pdf /path/to/Profile.pdf --out resume_data.json
+# or URL (public text page)
+python update_from_linkedin.py --url 'https://example.com/profile' --out resume_data.json
+# or text file
+python update_from_linkedin.py --text profile.txt --out resume_data.json
+```
+Then render as usual with `python generate.py`.
+
 ## Render DOCX
 1) Replace `resume_data.json` with the tailored output:
 ```bash
